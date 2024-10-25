@@ -310,68 +310,12 @@ Run image, that will automaticly update databases in folder `/srv/cvdupdate` and
 
 ```bash
 docker run -d \
-  -v /srv/cvdupdate:/cvdupdate/database \
-  -v /var/log/cvdupdate:/cvdupdate/logs \
+  -v /srv/cvdupdate:/cvdupdate/.cvdupdate/database \
+  -v /var/log/cvdupdate:/cvdupdate/.cvdupdate/logs \
   cvdupdate:latest
 ```
 
-Run image, that will automaticly update databases in folder `/srv/cvdupdate`, write logs to `/var/log/cvdupdate` and set owner of files to user with ID 1000
-
-```bash
-docker run -d \
-  -v /srv/cvdupdate:/cvdupdate/database \
-  -v /var/log/cvdupdate:/cvdupdate/logs \
-  -e USER_ID=1000 \
-  cvdupdate:latest
-```
-
-Default update interval is `30 */4 * * *` (see [Cron Example](#cron-example))
-
-You may pass custom update interval in environment variable `CRON`
-
-For example - update every day in 00:00
-
-```bash
-docker run -d \
-  -v /srv/cvdupdate:/cvdupdate/database \
-  -v /var/log/cvdupdate:/cvdupdate/logs \
-  -e CRON='0 0 * * *' \
-  cvdupdate:latest
-  ```
-## Use Docker Compose
-
-A Docker `compose.yaml` is provided to:
-1. Regularly update a Docker volume with the latest ClamAV databases.
-2. Serve a database mirror on port 8000 using the Apache webserver. 
-
-Edit the `compose.yaml` file if you need to change the default values:
-
-* Port 8000
-* USER_ID=0
-* CRON=30 */4 * * *
-
-### Build
-```bash
-docker compose build
-```
-
-### Start
-```bash
-docker compose up -d
-```
-
-### Stop
-```bash
-docker compose down
-```
-
-### Volumes
-Volumes are defined in `compose.yaml` and will be auto-created when you run `docker compose up`
-```
-DRIVER    VOLUME NAME
-local     cvdupdate_database
-local     cvdupdate_log
-```
+Update interval is `30 */4 * * *` (see [Cron Example](#cron-example))
 
 ## Contribute
 
